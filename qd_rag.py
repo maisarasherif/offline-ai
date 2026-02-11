@@ -10,19 +10,11 @@ if not client.collection_exists(collection_name="pms"):
         vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
     )
 
-
-dummy_data = [
-    "Porto Marine Services (PMS) is a company in Abu Dhabi",
-    "PMS is a Leading Marine Solutions Provider",
-    "Maysara Sherif is an Engineer who works at PMS",
-    "Maysara Sherif have been at PMS for 8 months",
-]
-
 def generate_response(prompt: str):
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
-            "model": "deepseek-r1:8b",
+            "model": "mistral:7b",
             "prompt": prompt,
             "stream": False
         }
@@ -33,18 +25,18 @@ def main():
 
     
 
-    for i, text in enumerate(dummy_data):
-        response = requests.post(
-            "http://localhost:11434/api/embed",
-            json={"model": "mxbai-embed-large", "input": text},
-        )
-        data = response.json()
-        embeddings = data["embeddings"][0]
-        client.upsert(
-            collection_name="pms",
-            wait=True,
-            points=[PointStruct(id=i, vector=embeddings, payload={"text": text})],
-        )
+    # for i, text in enumerate(dummy_data):
+    #     response = requests.post(
+    #         "http://localhost:11434/api/embed",
+    #         json={"model": "mxbai-embed-large", "input": text},
+    #     )
+    #     data = response.json()
+    #     embeddings = data["embeddings"][0]
+    #     client.upsert(
+    #         collection_name="pms",
+    #         wait=True,
+    #         points=[PointStruct(id=i, vector=embeddings, payload={"text": text})],
+    #     )
     
     
     prompt = input("Enter a prompt: ")
