@@ -2,3 +2,4 @@ requests
 qdrant_client
 pdfplumber
 fastembed
+streamlit
